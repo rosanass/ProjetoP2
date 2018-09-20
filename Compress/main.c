@@ -4,7 +4,7 @@
 
 int main() {
     int type;
-    char source[]="/home/carlos/Documentos/rosana.txt", dest[]="/home/carlos/Documentos/destino.txt";
+    char source[]="C:\\Users\\Rosana\\Documents\\rosana.txt", dest[]="C:\\Users\\Rosana\\Documents\\destino.txt";
     printf("Digite 1 para Compressão ou 2 para Descompressão:\n");
     scanf("%d", &type);
     getchar();

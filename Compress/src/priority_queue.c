@@ -6,6 +6,8 @@ struct NODE
     void* item;
     long long int priority;
     node* next;
+    node* left;
+    node* right;
 };
 
 struct PQ
@@ -28,12 +30,20 @@ int is_empty(pq *pq)
     else return 0;
 }
 
-void enqueue(pq *pq, void *j, long long int p)
+node* create_node(void* element, long long int p)
 {
     node *new_node = (node*) malloc(sizeof(node));
-    new_node->item = j;
+    new_node->item = element;
     new_node->priority = p;
-    if ((is_empty(pq))  || (p < pq->head->priority))
+    new_node->next = NULL;
+    new_node->left = NULL;
+    new_node->right = NULL;
+    return new_node;
+}
+
+void enqueue(pq *pq, node* new_node)
+{
+    if ((is_empty(pq))  || (new_node->priority < pq->head->priority))
     {
         new_node->next = pq->head;
         pq->head = new_node;
@@ -42,7 +52,7 @@ void enqueue(pq *pq, void *j, long long int p)
     else
     {
         node *current = pq->head;
-        while ((current->next != NULL) && (current->next->priority < p))
+        while ((current->next != NULL) && (current->next->priority < new_node->priority))
         {
             current = current->next;
         }
@@ -58,4 +68,19 @@ node* dequeue(pq *queue)
     node* aux = queue->head;
     queue->head = queue->head->next;
     return aux;
+}
+
+void set_node_left(node* new_node, node* left)
+{
+    new_node->left = left;
+}
+
+void set_node_right(node* new_node, node* right)
+{
+    new_node->right = right;
+}
+
+long long int get_node_priority(node* new_node)
+{
+    return new_node->priority;
 }
