@@ -29,7 +29,6 @@ ht* make_huff_tree(pq* priority_q)
         node* node_2 = dequeue(priority_q);
         node* new_node = merge_node(node_1, node_2);
         enqueue(priority_q, new_node);
-
     }
     //printf("oi");
     ht* new_tree = create_empty_ht();
