@@ -1,33 +1,38 @@
 #include <stdio.h>
 #include "../inc/huff_tree.h"
+#include "../inc/node.h"
 
-struct BT
+struct HT
 {
     int size;
     node* root;
 };
 
-bt* create_empty_bt()
+ht* create_empty_ht() 
 {
-    bt* new_bt = (bt*) malloc(sizeof(bt));
-    new_bt->size = 0;
-    new_bt->root = NULL;
-    return new_bt;
+    ht* new_ht = (ht*) malloc(sizeof(ht));
+    new_ht->size = 0;
+    new_ht->root = NULL;
+    return new_ht;
 }
 
-node* merge_node(node* node_1, node* node_2)
+ht* make_huff_tree(pq* priority_q)
 {
-    node* merged = create_node((void*)'*', get_node_priority(node_1)+get_node_priority(node_2));
-    set_node_left(merged, node_1);
-    set_node_right(merged, node_2);
-    return merged;
-}
+    unsigned char node_item;
+    if(get_pq_size(priority_q) == 1)
+    {
 
-bt* make_huff_tree(pq* priority_q)
-{
-    node* node_1 = dequeue(priority_q);
-    node* node_2 = dequeue(priority_q);
-    node* new_node = merge_node(node_1, node_2);
-    enqueue(priority_q, new_node);
-    printf("oi");
+    }
+    while(get_pq_size(priority_q) > 1)
+    {
+        node* node_1 = dequeue(priority_q);
+        node* node_2 = dequeue(priority_q);
+        node* new_node = merge_node(node_1, node_2);
+        enqueue(priority_q, new_node);
+
+    }
+    //printf("oi");
+    ht* new_tree = create_empty_ht();
+    new_tree->root = new_node;
+    return new_tree;
 }

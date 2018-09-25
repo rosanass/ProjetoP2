@@ -1,14 +1,7 @@
 #include "../inc/priority_queue.h"
+#include "../inc/node.h"
 #include <stdlib.h>
 #include <stdio.h>
-struct NODE
-{
-    void* item;
-    long long int priority;
-    node* next;
-    node* left;
-    node* right;
-};
 
 struct PQ
 {
@@ -30,34 +23,23 @@ int is_empty(pq *pq)
     else return 0;
 }
 
-node* create_node(void* element, long long int p)
-{
-    node *new_node = (node*) malloc(sizeof(node));
-    new_node->item = element;
-    new_node->priority = p;
-    new_node->next = NULL;
-    new_node->left = NULL;
-    new_node->right = NULL;
-    return new_node;
-}
-
 void enqueue(pq *pq, node* new_node)
 {
-    if ((is_empty(pq))  || (new_node->priority < pq->head->priority))
+    if ((is_empty(pq))  || (get_node_priority(new_node) < get_node_priority(pq->head)))
     {
-        new_node->next = pq->head;
+        set_node_next(new_node, pq->head);
         pq->head = new_node;
         pq->size++;
     }
     else
     {
-        node *current = pq->head;
-        while ((current->next != NULL) && (current->next->priority < new_node->priority))
+        node *current = pq->head; //aqui embaixo era: current->next->priority < new_node->priority
+        while ((get_node_next(current) != NULL) && (get_node_priority(get_node_next(current)) < get_node_priority(new_node)))
         {
-            current = current->next;
+            current = get_node_next(current);
         }
-        new_node->next = current->next;
-        current->next = new_node;
+        set_node_next(new_node, get_node_next(current));
+        set_node_next(current, new_node);
         pq->size++;
     }
 }
@@ -66,21 +48,16 @@ node* dequeue(pq *queue)
 {
     if (queue->head == NULL) return NULL;
     node* aux = queue->head;
-    queue->head = queue->head->next;
+    queue->head = get_node_next(queue->head);
     return aux;
 }
 
-void set_node_left(node* new_node, node* left)
+int get_pq_size(pq* queue)
 {
-    new_node->left = left;
+    return queue->size;
 }
 
-void set_node_right(node* new_node, node* right)
+pq* get_pq_head(pq* queue)
 {
-    new_node->right = right;
-}
-
-long long int get_node_priority(node* new_node)
-{
-    return new_node->priority;
+    return queue->head;
 }

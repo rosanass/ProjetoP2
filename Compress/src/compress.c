@@ -8,7 +8,7 @@ void start_compression(FILE *source, FILE *dest)
     long long int *freq;
     freq = count_frequency(source);
     pq* priority_q = make_queue(freq);
-    bt* huff_tree = make_huff_tree(priority_q);
+    ht* huff_tree = make_huff_tree(priority_q);
 
 
 }
@@ -36,7 +36,7 @@ pq* make_queue(long long int *freq)
         node* new_node = create_node((void*)i, freq[i]);
         enqueue(queue, new_node);
     }
-    printf("oi");
+    printf("ola");
     return queue;
 }
 
