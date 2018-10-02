@@ -10,6 +10,6 @@ int is_empty(pq *pq);
 void enqueue(pq *pq, node* new_node);
 node* dequeue(pq *queue);
 int get_pq_size(pq* queue);
-pq* get_pq_head(pq* queue);
+node* get_pq_head(pq* queue);
 
 #endif

@@ -57,7 +57,7 @@ int get_pq_size(pq* queue)
     return queue->size;
 }
 
-pq* get_pq_head(pq* queue)
+node* get_pq_head(pq* queue)
 {
     return queue->head;
 }

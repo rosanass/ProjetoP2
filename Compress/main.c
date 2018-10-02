@@ -7,7 +7,7 @@ int main() {
     char source[]="C:\\Users\\Rosana\\Documents\\rosana.txt", dest[]="C:\\Users\\Rosana\\Documents\\destino.txt";
     printf("Digite 1 para Compressão ou 2 para Descompressão:\n");
     scanf("%d", &type);
-    getchar();
+    //getchar();
     if(type == 1)
     {
         //printf("Onde está o arquivo de origem?\n");
