@@ -4,6 +4,7 @@
 
 struct HT
 {
+    //todo descobrir pra que size serve
     int size;
     node* root;
 };
@@ -18,20 +19,23 @@ ht* create_empty_ht()
 
 ht* make_huff_tree(pq* priority_q)
 {
-    unsigned char node_item;
-    if(get_pq_size(priority_q) == 1)
-    {
-
-    }
+    int size_of_tree = 0;
     while(get_pq_size(priority_q) > 1)
     {
         node* node_1 = dequeue(priority_q);
         node* node_2 = dequeue(priority_q);
         node* new_node = merge_node(node_1, node_2);
         enqueue(priority_q, new_node);
+        size_of_tree++;
     }
-    //printf("oi");
+
     ht* new_tree = create_empty_ht();
-    new_tree->root = new_node;
+    new_tree->root = dequeue(priority_q);
+    new_tree->size = size_of_tree;
     return new_tree;
+}
+
+node* get_tree_node(ht* huff_tree)
+{
+    return huff_tree->root;
 }
