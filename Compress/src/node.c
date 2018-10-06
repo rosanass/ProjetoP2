@@ -24,8 +24,9 @@ node* create_node(void* element, long long int p)
 
 node* merge_node(node* node_1, node* node_2)
 {
-    unsigned char item_of_node = '*';
-    node* merged = create_node(&item_of_node, node_1->priority + node_2->priority);
+    unsigned char* item_of_node = (unsigned char*) malloc(sizeof(unsigned char));
+    *item_of_node = '*';
+    node* merged = create_node(item_of_node, node_1->priority + node_2->priority);
     merged->left = node_1;
     merged->right = node_2;
     return merged;

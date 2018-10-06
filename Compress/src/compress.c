@@ -44,8 +44,8 @@ pq* make_queue(long long int *freq)
     {
         if(freq[i]>0)
         {
-            unsigned char item_of_node = (unsigned char) malloc(sizeof(unsigned char));
-            item_of_node = (unsigned char)i;
+            unsigned char* item_of_node = (unsigned char*) malloc(sizeof(unsigned char));
+            *item_of_node = i;
             node* new_node = create_node(&item_of_node, freq[i]);
             enqueue(queue, new_node);
         }
@@ -55,8 +55,14 @@ pq* make_queue(long long int *freq)
 
 char** make_path(ht* tree)
 {
-    char code[256][256]; //mudei, antes era code[256][256]
-    char path[256];
+    //char code[256][256]; //mudei, antes era code[256][256]
+    char **code = (char**) malloc(sizeof(char*) * 256);
+    for (int i = 0; i < 256; ++i)
+    {
+        code[i] = (char*) malloc(sizeof(char));
+    }
+    char *path = (char*) malloc(sizeof(char) * 256);
+    //char path[256];
     node* curr = get_tree_node(tree);
     printf("Making codification \n");
     make_codification(path, code, curr, 0);
@@ -104,19 +110,18 @@ void make_header(long long int *freq, char **code, ht* tree, FILE* dest)
     unsigned char byte = '\0';
     for (i = 0; i < 16; i++)
     {
-        if(pos_write == -1) //reseta para escrever no prox byte
-        {
-            fwrite(&byte, 1, sizeof(unsigned char), dest);
-            pos_write = 7;
-            byte = '\0';
-        }
         if(trash[i] == '1')
         {
             byte = set_bit(byte, pos_write);
         }
         pos_write--;
     }
-
+    if(pos_write == -1) //reseta para escrever no prox byte
+    {
+        fwrite(&byte, 1, sizeof(unsigned char), dest);
+        pos_write = 7;
+        byte = '\0';
+    }
 }
 
 // conta frequencias e salva num array[256] OK

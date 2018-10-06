@@ -19,6 +19,8 @@ int main() {
         FILE *new_archive = fopen(dest, "wb");
         start_compression(archive, new_archive);
         // todo  criar função compress
+        fclose(archive);
+        fclose(new_archive);
     }
     else if(type == 2)
     {

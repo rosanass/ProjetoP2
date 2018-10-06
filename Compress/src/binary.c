@@ -10,7 +10,8 @@ char *convert_to_binary(long long int number, int bits)
 {
     int i;
     int remainder;
-    char converted[bits+1];
+    char *converted = (char*) malloc((bits+1) * sizeof(char));
+    //char converted[bits+1];
     converted[bits] = '\0'; //na ultima posição
     for(i = bits-1; i >= 0; i--)
     {
