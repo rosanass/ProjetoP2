@@ -46,7 +46,7 @@ pq* make_queue(long long int *freq)
         {
             unsigned char* item_of_node = (unsigned char*) malloc(sizeof(unsigned char));
             *item_of_node = i;
-            node* new_node = create_node(&item_of_node, freq[i]);
+            node* new_node = create_node(item_of_node, freq[i]);
             enqueue(queue, new_node);
         }
     }
@@ -122,6 +122,7 @@ void make_header(long long int *freq, char **code, ht* tree, FILE* dest)
         pos_write = 7;
         byte = '\0';
     }
+    fseek(dest, 0, SEEK_END);
     print_pre_order(dest, get_tree_node(tree));
 }
 
@@ -136,7 +137,7 @@ void print_pre_order(FILE* archive, node* curr)
         }
         else //folha normal
         {
-            fprintf(archive, "%c", *(unsigned char*)(get_node_item(curr)));
+            fprintf(archive, "%c", *((unsigned char*)(get_node_item(curr))));
         }
         //so printa mas se for * printa \*
     }
