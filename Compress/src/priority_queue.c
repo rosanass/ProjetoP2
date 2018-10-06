@@ -49,6 +49,7 @@ node* dequeue(pq *queue)
     if (queue->head == NULL) return NULL;
     node* aux = queue->head;
     queue->head = get_node_next(queue->head);
+    queue->size = queue->size-1;
     return aux;
 }
 
