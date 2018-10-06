@@ -122,6 +122,31 @@ void make_header(long long int *freq, char **code, ht* tree, FILE* dest)
         pos_write = 7;
         byte = '\0';
     }
+    print_pre_order(dest, get_tree_node(tree));
+}
+
+
+void print_pre_order(FILE* archive, node* curr)
+{
+    if(get_node_left(curr) == NULL && get_node_right(curr) == NULL)
+    {
+        if(*(unsigned char*)(get_node_item(curr)) == '*') //folha asterisco
+        {
+            fprintf(archive, "\\*");
+        }
+        else //folha normal
+        {
+            fprintf(archive, "%c", *(unsigned char*)(get_node_item(curr)));
+        }
+        //so printa mas se for * printa \*
+    }
+    else //so asterisco
+    {
+        fprintf(archive, "*");
+        print_pre_order(archive, get_node_left(curr));
+        print_pre_order(archive, get_node_right(curr));
+        //printa a si memsmo, chama esquerda e depois direita
+    }
 }
 
 // conta frequencias e salva num array[256] OK
