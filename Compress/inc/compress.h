@@ -14,6 +14,7 @@ void make_codification(char *path, char **code, node* curr, int pos);
 int trash_size(long long int *freq, char **code);
 void make_header(long long int *freq, char **code, ht* tree, FILE* dest);
 void print_pre_order(FILE* archive, node* curr);
+void make_final_file(FILE* dest, FILE* source, char **code);
 
 #endif
 

@@ -19,7 +19,9 @@ void start_compression(FILE *source, FILE *dest)
     char **code = make_path(huff_tree);
     printf("Making header \n");
     make_header(freq, code, huff_tree, dest);
-
+    printf("Finish reader\n");
+    make_final_file(dest, source, code);
+    printf("Final file done\n");
 }
 
 long long int* count_frequency(FILE *source)
@@ -96,13 +98,14 @@ int trash_size(long long int *freq, char **code)
     {
         sum+= freq[i] * strlen(code[i]);
     }
-    result = sum % 8;
+    result = abs((8-sum) % 8);
     return result;
 }
 
 void make_header(long long int *freq, char **code, ht* tree, FILE* dest)
 {
     printf("Size of the tree: %d\n", get_tree_size(tree));
+    printf("size of trash: %d\n", trash_size(freq, code));
     char* trash = convert_to_binary(trash_size(freq, code), 3);
     char* tree_size = convert_to_binary(get_tree_size(tree), 13);
     strcat(trash, tree_size);
@@ -115,15 +118,16 @@ void make_header(long long int *freq, char **code, ht* tree, FILE* dest)
             byte = set_bit(byte, pos_write);
         }
         pos_write--;
+        if(pos_write == -1) //reseta para escrever no prox byte
+        {
+            fwrite(&byte, 1, sizeof(unsigned char), dest);
+            pos_write = 7;
+            byte = '\0';
+        }
     }
-    if(pos_write == -1) //reseta para escrever no prox byte
-    {
-        fwrite(&byte, 1, sizeof(unsigned char), dest);
-        pos_write = 7;
-        byte = '\0';
-    }
-    fseek(dest, 0, SEEK_END);
+    printf("comecei a pre ordem\n");
     print_pre_order(dest, get_tree_node(tree));
+    printf("acabei a pre ordem\n");
 }
 
 
@@ -150,6 +154,39 @@ void print_pre_order(FILE* archive, node* curr)
     }
 }
 
+void make_final_file(FILE* dest, FILE* source, char **code)
+{
+    rewind(source);
+    unsigned char item_of_node;
+    int pos_write = 7, i = 0;
+    unsigned char byte = '\0';
+    while( fread(&item_of_node, 1, sizeof(unsigned char), source) == 1) //retorna quanto foi lido
+    {
+        printf("%c", item_of_node);
+        i=0;
+        while (code[item_of_node][i] != '\0')
+        {
+            if(code[item_of_node][i] == '1')
+            {
+                byte = set_bit(byte, pos_write);
+            }
+            pos_write--;
+            if(pos_write == -1) //reseta para escrever no prox byte
+            {
+                fwrite(&byte, 1, sizeof(unsigned char), dest);
+                pos_write = 7;
+                byte = '\0';
+            }
+            i++;
+        }
+    }
+    if(pos_write != 7) //byte incompleto
+    {
+        fwrite(&byte, 1, sizeof(unsigned char), dest);
+    }
+
+}
+
 // conta frequencias e salva num array[256] OK
 // coloca numa fila de prioridade em ordem crescente OK
 // faz a árvore a partir da fila OK
@@ -158,5 +195,5 @@ void print_pre_order(FILE* archive, node* curr)
     //3 bits pra tam lixo (valor total % 8) OK
     // somatorio das frequencias * tam do percurso OK
     //13 pra tam da arvore OK
-    //arvore em pre ordem
-// criar novo arquivo
+    //arvore em pre ordem OK
+// criar novo arquivo, printando os bits todos no arquivo
