@@ -43,6 +43,11 @@ int how_many_nodes(node* root)
     }
     else if(get_node_left(root) == NULL && get_node_right(root) == NULL)
     {
+        unsigned char c = *((unsigned char*)get_node_item(root));
+        if(c == '\\' ^ c == '*')
+        {
+            return 2;
+        }
         return 1;
     }
     else

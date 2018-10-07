@@ -139,6 +139,10 @@ void print_pre_order(FILE* archive, node* curr)
         {
             fprintf(archive, "\\*");
         }
+        else if(*(unsigned char*)(get_node_item(curr)) == '\\')
+        {
+            fprintf(archive, "\\\\");
+        }
         else //folha normal
         {
             fprintf(archive, "%c", *((unsigned char*)(get_node_item(curr))));
@@ -162,7 +166,7 @@ void make_final_file(FILE* dest, FILE* source, char **code)
     unsigned char byte = '\0';
     while( fread(&item_of_node, 1, sizeof(unsigned char), source) == 1) //retorna quanto foi lido
     {
-        printf("%c", item_of_node);
+        //printf("%c", item_of_node);
         i=0;
         while (code[item_of_node][i] != '\0')
         {
