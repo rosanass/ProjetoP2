@@ -65,3 +65,8 @@ int get_tree_size(ht* huff_tree)
 {
     return huff_tree->size;
 }
+
+void set_tree_node(ht* huff_tree, node* new)
+{
+    huff_tree->root = new;
+}
