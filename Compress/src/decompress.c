@@ -13,6 +13,7 @@ void start_decompression(FILE* archive, FILE* new_archive)
     ht* huff_tree = create_empty_ht();
     int pos=0;
     set_tree_node(huff_tree, remake_huff_tree(pre_order, &pos, tree_size));
+    printf("");
 }
 
 int get_header_trash_size(FILE* archive)
