@@ -5,8 +5,9 @@
 
 int main() {
     int type;
-    char source[]="D:\\jaehnatal.jpg", dest[]="D:\\x.huff";
-    char source1[]="D:\\out1.txt", dest1[]="D:\\teste1d.txt";
+    char source[]="D:\\novo.jpg", dest[]="D:\\out.huff";
+    char source1[]="D:\\out.huff", dest1[]="D:\\saida.jpg";
+
 
     printf("Digite 1 para Compressão ou 2 para Descompressão:\n");
     scanf("%d", &type);

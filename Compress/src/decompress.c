@@ -39,7 +39,7 @@ int get_header_tree_size(FILE* archive)
     fread(&byte, 1, 1, archive);
     int i, tree_size=0;
     byte = byte << 3;
-    byte = byte >> 5;
+    byte = byte >> 3;
     for (i = 4; i >= 0; --i)
     {
         if (is_bit_i_set(byte, i))
@@ -120,10 +120,10 @@ void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_s
 
         if (ftell(source) == end)
         {
-            printf("Oi, eu sou o ULTIMO BYTE %c\n", byte);
+           // printf("Oi, eu sou o ULTIMO BYTE %c\n", byte);
             for (i = 7; i >= (8 - trash_size); i--)
             {
-                if(is_bit_i_set(byte, i) == 1)
+                if(is_bit_i_set(byte, i) != 0)
                 {
                     aux = get_node_right(aux);
                 }
@@ -134,7 +134,7 @@ void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_s
 
                 if(get_node_left(aux) == NULL && get_node_right(aux) == NULL)
                 {
-                    fwrite(&byte, 1, sizeof(unsigned char), dest);
+                    fwrite(get_node_item(aux), 1, sizeof(unsigned char), dest);
                     aux = get_tree_node(huff_tree);
                 }
 
@@ -144,7 +144,8 @@ void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_s
         {
             for (i = 7; i >= 0; i--)
             {
-                if(is_bit_i_set(byte, i) == 1)
+               // printf("%d",is_bit_i_set(byte,i));
+                if(is_bit_i_set(byte, i) !=0)
                 {
                     aux = get_node_right(aux);
                 }
@@ -155,7 +156,7 @@ void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_s
 
                 if(get_node_left(aux) == NULL && get_node_right(aux) == NULL)
                 {
-                    fwrite(&byte, 1, sizeof(unsigned char), dest);
+                    fwrite(get_node_item(aux), 1, sizeof(unsigned char), dest);
                     aux = get_tree_node(huff_tree);
                 }
 
