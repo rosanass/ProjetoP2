@@ -13,7 +13,7 @@ void start_decompression(FILE* archive, FILE* new_archive)
     ht* huff_tree = create_empty_ht();
     int pos = 0;
     set_tree_node(huff_tree, remake_huff_tree(pre_order, &pos, tree_size));
-    printf("");
+    make_decompressed_file(archive, new_archive, huff_tree, trash_size);
 }
 
 int get_header_trash_size(FILE* archive)
@@ -104,4 +104,62 @@ node* remake_huff_tree(unsigned char *pre_order, int * pos, int tree_size)
         }
     }
     return new_node;
+}
+
+void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_size)
+{
+    long long int curr = ftell(source); // Retorna a posição que será lida.
+    fseek(source,0, SEEK_END);
+    long long int end = ftell(source);
+    fseek(source, curr,0); //volta pra onde tava
+    unsigned char byte;
+    node* aux = get_tree_node(huff_tree);
+    while(fread(&byte, 1, 1, source) == 1)
+    {
+        int i, pos_read = 7;
+
+        if (ftell(source) == end)
+        {
+            printf("Oi, eu sou o ULTIMO BYTE %c\n", byte);
+            for (i = 7; i >= (8 - trash_size); i--)
+            {
+                if(is_bit_i_set(byte, i) == 1)
+                {
+                    aux = get_node_right(aux);
+                }
+                else
+                {
+                    aux = get_node_left(aux);
+                }
+
+                if(get_node_left(aux) == NULL && get_node_right(aux) == NULL)
+                {
+                    fwrite(&byte, 1, sizeof(unsigned char), dest);
+                    aux = get_tree_node(huff_tree);
+                }
+
+            }
+        }
+        else
+        {
+            for (i = 7; i >= 0; i--)
+            {
+                if(is_bit_i_set(byte, i) == 1)
+                {
+                    aux = get_node_right(aux);
+                }
+                else
+                {
+                    aux = get_node_left(aux);
+                }
+
+                if(get_node_left(aux) == NULL && get_node_right(aux) == NULL)
+                {
+                    fwrite(&byte, 1, sizeof(unsigned char), dest);
+                    aux = get_tree_node(huff_tree);
+                }
+
+            }
+        }
+    }
 }
