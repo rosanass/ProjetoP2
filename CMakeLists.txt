@@ -7,4 +7,6 @@ set(SOURCE_FILES Compress/main.c Compress/inc/compress.h Compress/src/compress.c
         Compress/inc/decompress.h Compress/src/decompress.c Compress/inc/priority_queue.h
         Compress/src/priority_queue.c Compress/inc/huff_tree.h Compress/src/huff_tree.c Compress/inc/node.h Compress/src/node.c
         Compress/inc/binary.h Compress/src/binary.c)
-add_executable(ProjetoP2 ${SOURCE_FILES})
+
+
+add_executable(Huffman ${SOURCE_FILES})

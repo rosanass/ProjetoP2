@@ -5,13 +5,12 @@
 
 int main() {
     int type;
-    char source[]="D:\\novo.jpg", dest[]="D:\\out.huff";
-    char source1[]="D:\\out.huff", dest1[]="D:\\saida.jpg";
+    char source[]="C:\\Users\\Rosana\\Documents\\", dest[]="C:\\Users\\Rosana\\Documents\\";
+    char source1[]="C:\\Users\\Rosana\\Documents\\", dest1[]="C:\\Users\\Rosana\\Documents\\";
 
 
     printf("Digite 1 para Compressão ou 2 para Descompressão:\n");
     scanf("%d", &type);
-    //getchar();
     if(type == 1)
     {
         FILE *archive = fopen(source, "rb");
@@ -22,11 +21,9 @@ int main() {
     }
     else if(type == 2)
     {
-        printf("Onde o arquivo vai ser salvo?\n");
         FILE *archive = fopen(source1, "rb");
         FILE *new_archive = fopen(dest1, "wb");
         start_decompression(archive, new_archive);
-        // todo  criar função decompress
     }
     return 0;
 }

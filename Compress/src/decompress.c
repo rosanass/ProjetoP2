@@ -78,7 +78,6 @@ node* remake_huff_tree(unsigned char *pre_order, int * pos, int tree_size)
     }
     unsigned char * c =  (unsigned char *)malloc(sizeof(unsigned char));
     *c= pre_order[*pos];
-    //unsigned char c = pre_order[*pos];
     node* new_node;
     if(*c  == '*')
     {
@@ -108,10 +107,10 @@ node* remake_huff_tree(unsigned char *pre_order, int * pos, int tree_size)
 
 void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_size)
 {
-    long long int curr = ftell(source); // Retorna a posição que será lida.
+    long long int curr = ftell(source);
     fseek(source,0, SEEK_END);
     long long int end = ftell(source);
-    fseek(source, curr,0); //volta pra onde tava
+    fseek(source, curr,0);
     unsigned char byte;
     node* aux = get_tree_node(huff_tree);
     while(fread(&byte, 1, 1, source) == 1)
@@ -120,7 +119,6 @@ void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_s
 
         if (ftell(source) == end)
         {
-           // printf("Oi, eu sou o ULTIMO BYTE %c\n", byte);
             for (i = 7; i >= (8 - trash_size); i--)
             {
                 if(is_bit_i_set(byte, i) != 0)
@@ -144,7 +142,6 @@ void make_decompressed_file(FILE* source, FILE* dest, ht* huff_tree, int trash_s
         {
             for (i = 7; i >= 0; i--)
             {
-               // printf("%d",is_bit_i_set(byte,i));
                 if(is_bit_i_set(byte, i) !=0)
                 {
                     aux = get_node_right(aux);
